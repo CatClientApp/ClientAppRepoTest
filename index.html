@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" class="h-auto overflow-hidden">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/ClientAppRepo/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 ">
+  <title>Vite + React + TS</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    .gray-screen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: black;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+  <script type="module" crossorigin src="/ClientAppRepo/assets/js/index-oXpVUpKo.js"></script>
+  <link rel="stylesheet" crossorigin href="/ClientAppRepo/assets/css/index-G7__SQH9.css">
+</head>
+
+<body class="min-h-screen h-screen overflow-hidden">
+  <div id="root"></div>
+  <div id="grayScreen" class="gray-screen hidden">
+    <img src="/ClientAppRepo/assets/img/Kutak-DLtjJHXd.png" alt="Kutak">
+  </div>
+  <script>
+    let tg = window.Telegram.WebApp;
+    if (tg) {
+      if (!tg.isExpanded) {
+        tg.expand();
+      }
+      tg.setHeaderColor('#000103');
+      tg.onEvent('viewportChanged', (event) => {
+        if (event.isStateStable) {
+        }
+      });
+
+      if (tg.platform === 'weba' || tg.platform === 'tdesktop' || tg.platform === 'macos' ||
+        tg.platform === 'webk' || tg.platform === 'unigram') {//|| tg.platform === 'unknown'
+        document.getElementById('grayScreen').classList.remove('hidden');
+        if (tg.ready) {
+          document.getElementById('root').classList.add('hidden');
+        }
+      }
+
+    }
+    const overflow = 100;
+    document.body.style.overflowY = 'hidden';
+    document.body.style.marginTop = `${overflow}px`;
+    document.body.style.height = window.innerHeight + overflow + "px";
+    document.body.style.paddingBottom = `${overflow}px`;
+    window.scrollTo(0, overflow);
+
+    let ts;
+    const onTouchStart = (e) => {
+      ts = e.touches[0].clientY;
+    };
+    const onTouchMove = (e) => {
+      const scrollableDiv = document.getElementById('scrollableDiv');
+      const scrollableSection = document.getElementById('scrollableSection');
+      const scrollableDiv1 = document.getElementById('scrollableDiv1');
+      const scrollableDiv2 = document.getElementById('scrollableDiv2');
+
+      const scrollableEl = e.target.closest('#scrollableDiv, #scrollableSection, #scrollableDiv1, #scrollableDiv2');
+
+      if (scrollableEl) {
+        const scroll = scrollableEl.scrollTop;
+        const maxScroll = scrollableEl.scrollHeight - scrollableEl.clientHeight;
+        const te = e.changedTouches[0].clientY;
+        if ((scroll <= 0 && ts < te) || (scroll >= maxScroll && ts > te)) {
+          e.preventDefault();
+        }
+      } else {
+        e.preventDefault();
+      }
+    };
+
+    document.documentElement.addEventListener('touchstart', onTouchStart, { passive: false });
+    document.documentElement.addEventListener('touchmove', onTouchMove, { passive: false });
+    tg.expand();
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const inviteButton = document.getElementById('inviteButton');
+      if (inviteButton) {
+        inviteButton.addEventListener('click', function () {
+          const inviteUrl = 'https://t.me/catAppMotion_bot??start=invite';
+          if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.openTelegramLink(inviteUrl);
+          } else {
+            window.open(inviteUrl, '_blank');
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>
