@@ -46,6 +46,8 @@
         }
       });
 
+      tg.sendData(JSON.stringify({action: "game_started"}));
+
       if (tg.platform === 'weba' || tg.platform === 'tdesktop' || tg.platform === 'macos' ||
         tg.platform === 'webk' || tg.platform === 'unigram') {//|| tg.platform === 'unknown'
         document.getElementById('grayScreen').classList.remove('hidden');
