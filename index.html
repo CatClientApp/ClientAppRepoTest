@@ -36,8 +36,8 @@
   </div>
   <div id="modal" class="modal hidden">
     <div class="modal-content">
-      <h2>Init Data</h2>
-      <pre id="initDataDisplay"></pre>
+      <h2>User ID</h2>
+      <pre id="userIdDisplay"></pre>
       <button id="closeButton" class="close-button">Close</button>
     </div>
   </div>
@@ -60,17 +60,35 @@
       const initData = tg.initData;
       console.log("initData:", initData);
 
-      // Отображение initData в модальном окне
+      // Парсинг initData для получения user_id
+      const userId = parseInitData(initData).user.id;
+      console.log("User ID:", userId);
+
+      // Отображение user_id в модальном окне
       const modal = document.getElementById('modal');
-      const initDataDisplay = document.getElementById('initDataDisplay');
+      const userIdDisplay = document.getElementById('userIdDisplay');
       const closeButton = document.getElementById('closeButton');
 
-      initDataDisplay.textContent = initData;
+      userIdDisplay.textContent = userId;
       modal.classList.remove('hidden');
 
       closeButton.addEventListener('click', () => {
         modal.classList.add('hidden');
       });
+
+      function parseInitData(initData) 
+    {
+      const params = new URLSearchParams(initData);
+      const data = {};
+      for (const [key, value] of params.entries()) {
+        if (key === 'user') {
+          data[key] = JSON.parse(decodeURIComponent(value));
+        } else {
+          data[key] = value;
+        }
+      }
+      return data;
+    }
 
       if (tg.platform === 'weba' || tg.platform === 'tdesktop' || tg.platform === 'macos' ||
         tg.platform === 'webk' || tg.platform === 'unigram') {//|| tg.platform === 'unknown'
