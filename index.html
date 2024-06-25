@@ -25,7 +25,7 @@
       display: none;
     }
   </style>
-  <script type="module" crossorigin src="/ClientAppRepoTest/assets/js/index-B3nu2vBE.js"></script>
+  <script type="module" crossorigin src="/ClientAppRepoTest/assets/js/index-BaNhDpeX.js"></script>
   <link rel="stylesheet" crossorigin href="/ClientAppRepoTest/assets/css/index-BXPYUCup.css">
 </head>
 
@@ -33,20 +33,44 @@
   <div id="root"></div>
   <div id="grayScreen" class="gray-screen hidden">
     <img src="/ClientAppRepoTest/assets/img/Kutak-DLtjJHXd.png" alt="Kutak">
+  </div>
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Init Data</h2>
+      <pre id="initDataDisplay"></pre>
+      <button id="closeButton" class="close-button">Close</button>
+    </div>
   </div>
   <script>
     let tg = window.Telegram.WebApp;
     if (tg) {
+      console.log("Telegram WebApp API инициализировано");
+      tg.ready();
       if (!tg.isExpanded) {
         tg.expand();
       }
       tg.setHeaderColor('#000103');
       tg.onEvent('viewportChanged', (event) => {
         if (event.isStateStable) {
+          console.log("Viewport изменен");
         }
       });
 
-      tg.sendData(JSON.stringify({action: "game_started"}));
+      // Получение initData
+      const initData = tg.initData;
+      console.log("initData:", initData);
+
+      // Отображение initData в модальном окне
+      const modal = document.getElementById('modal');
+      const initDataDisplay = document.getElementById('initDataDisplay');
+      const closeButton = document.getElementById('closeButton');
+
+      initDataDisplay.textContent = initData;
+      modal.classList.remove('hidden');
+
+      closeButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
 
       if (tg.platform === 'weba' || tg.platform === 'tdesktop' || tg.platform === 'macos' ||
         tg.platform === 'webk' || tg.platform === 'unigram') {//|| tg.platform === 'unknown'
