@@ -25,7 +25,7 @@
       display: none;
     }
   </style>
-  <script type="module" crossorigin src="/ClientAppRepoTest/assets/js/index-BaNhDpeX.js"></script>
+  <script type="module" crossorigin src="/ClientAppRepoTest/assets/js/index-DHz1sP5P.js"></script>
   <link rel="stylesheet" crossorigin href="/ClientAppRepoTest/assets/css/index-BXPYUCup.css">
 </head>
 
@@ -33,62 +33,18 @@
   <div id="root"></div>
   <div id="grayScreen" class="gray-screen hidden">
     <img src="/ClientAppRepoTest/assets/img/Kutak-DLtjJHXd.png" alt="Kutak">
-  </div>
-  <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <h2>User ID</h2>
-      <pre id="userIdDisplay"></pre>
-      <button id="closeButton" class="close-button">Close</button>
-    </div>
   </div>
   <script>
     let tg = window.Telegram.WebApp;
     if (tg) {
-      console.log("Telegram WebApp API инициализировано");
-      tg.ready();
       if (!tg.isExpanded) {
         tg.expand();
       }
       tg.setHeaderColor('#000103');
       tg.onEvent('viewportChanged', (event) => {
         if (event.isStateStable) {
-          console.log("Viewport изменен");
         }
       });
-
-      // Получение initData
-      const initData = tg.initData;
-      console.log("initData:", initData);
-
-      // Парсинг initData для получения user_id
-      const userId = parseInitData(initData).user.id;
-      console.log("User ID:", userId);
-
-      // Отображение user_id в модальном окне
-      const modal = document.getElementById('modal');
-      const userIdDisplay = document.getElementById('userIdDisplay');
-      const closeButton = document.getElementById('closeButton');
-
-      userIdDisplay.textContent = userId;
-      modal.classList.remove('hidden');
-
-      closeButton.addEventListener('click', () => {
-        modal.classList.add('hidden');
-      });
-
-      function parseInitData(initData) 
-    {
-      const params = new URLSearchParams(initData);
-      const data = {};
-      for (const [key, value] of params.entries()) {
-        if (key === 'user') {
-          data[key] = JSON.parse(decodeURIComponent(value));
-        } else {
-          data[key] = value;
-        }
-      }
-      return data;
-    }
 
       if (tg.platform === 'weba' || tg.platform === 'tdesktop' || tg.platform === 'macos' ||
         tg.platform === 'webk' || tg.platform === 'unigram') {//|| tg.platform === 'unknown'
