@@ -20,19 +20,48 @@
       width: 100%;
       z-index: 9999;
     }
+    .modal-background {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 400px;
+      text-align: center;
+    }
 
     .hidden {
       display: none;
     }
   </style>
-  <script type="module" crossorigin src="/ClientAppRepoTest/assets/js/index-x9kxPCdq.js"></script>
-  <link rel="stylesheet" crossorigin href="/ClientAppRepoTest/assets/css/index-CdZixQax.css">
+  <script type="module" crossorigin src="/ClientAppRepoTest/assets/js/index-D-JMJaR7.js"></script>
+  <link rel="stylesheet" crossorigin href="/ClientAppRepoTest/assets/css/index-C6Dj8U7K.css">
 </head>
 
 <body class="min-h-screen h-screen overflow-hidden">
   <div id="root"></div>
   <div id="grayScreen" class="gray-screen hidden">
     <img src="/ClientAppRepoTest/assets/img/Kutak-DLtjJHXd.png" alt="Kutak">
+  </div>
+  <!-- Модальное окно -->
+  <div id="membershipModal" class="modal-background hidden">
+    <div class="modal-content">
+      <p>To play, you need to subscribe to the group.</p>
+      <button id="joinGroupButton">Join the group</button>
+    </div>
   </div>
   <script>
     let tg = window.Telegram.WebApp;
@@ -45,15 +74,6 @@
         if (event.isStateStable) {
         }
       });
-
-      //if (tg.platform === 'weba' || tg.platform === 'tdesktop' || tg.platform === 'macos' ||
-      //  tg.platform === 'webk' || tg.platform === 'unigram') {//|| tg.platform === 'unknown'
-      //  document.getElementById('grayScreen').classList.remove('hidden');
-      //  if (tg.ready) {
-      //    document.getElementById('root').classList.add('hidden');
-      //  }
-      //}
-
     }
     const overflow = 100;
     document.body.style.overflowY = 'hidden';
@@ -93,21 +113,33 @@
     tg.expand();
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const inviteButton = document.getElementById('inviteButton');
-      if (inviteButton) {
-        inviteButton.addEventListener('click', function () {
-          const inviteUrl = 'https://t.me/catAppMotion_bot??start=invite';
-          if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.openTelegramLink(inviteUrl);
-          } else {
-            window.open(inviteUrl, '_blank');
-          }
+    document.addEventListener('DOMContentLoaded', async function () {
+      const urlWindow = window.location.href;
+      const url = new URL(urlWindow);
+      const params = new URLSearchParams(url.search);
+      const userIdFromUrl = params.get('user_id');
+
+      if (userIdFromUrl) {
+        const response = await fetch('https://tg.catserver-production.com/cattg/check_membership', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Origin': window.location.origin,
+          },
+          body: JSON.stringify({ user_id: userIdFromUrl, chat_id: "@catapcommunity" }),
         });
+
+        const result = await response.json();
+
+        if (!result.membership) {
+          document.getElementById('membershipModal').classList.remove('hidden');
+          document.getElementById('joinGroupButton').addEventListener('click', () => {
+            window.Telegram.WebApp.openTelegramLink('https://t.me/@catapcommunity');
+          });
+        }
       }
     });
   </script>
-
 </body>
 
 </html>
