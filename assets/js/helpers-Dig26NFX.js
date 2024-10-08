@@ -1,1 +1,0 @@
-const n=e=>{const s=e.toString(),t=[];for(let o=s.length;o>0;o-=3)t.unshift(s.substring(Math.max(0,o-3),o));return t.join(" ")},r=e=>{const s=["","K","M","B","T"];let t=0;for(;e>=1e3&&t<s.length-1;)e/=1e3,t++;return e.toFixed(1)+" "+s[t]},f=e=>{const s=["","K","M","B","T"];let t=0;for(;e>=1e3&&t<s.length-1;)e/=1e3,t++;return Math.floor(e)+s[t]};export{r as a,f as b,n as f};
